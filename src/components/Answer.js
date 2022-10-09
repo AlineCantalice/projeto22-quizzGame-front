@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
+import ScoreContext from "../contexts/scoreContext";
 
 export default function Answer({ answer }) {
 
     const [randomAnswerList, setRandomAnswerList] = useState([]);
     const [randomize, setRandomize] = useState(false);
     const [answerList, setAnswerList] = useState([]);
+    const [correct, setCorrect] = useState(false);
+    const { score, setScore } = useContext(ScoreContext);
+    const navidate = useNavigate();
 
     useEffect(() => {
         setAnswerList(answer);
@@ -32,8 +37,17 @@ export default function Answer({ answer }) {
     }
 
     function verifyAnswer(answer) {
+        setCorrect(answer.correct);
         if (answer.correct) {
-            console.log('Tela sucesso')
+            let valor = score;
+            setScore(++valor);
+            sessionStorage.setItem('score', valor);
+            alert('Você acertou!')
+            window.location.reload()
+        } else {
+            alert('Você errou! :(');
+            sessionStorage.clear();
+            navidate('/');
         }
     }
 

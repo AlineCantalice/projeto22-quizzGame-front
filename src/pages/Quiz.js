@@ -18,6 +18,7 @@ export default function Quiz() {
         promise.then(response => {
             setQuizList(response.data);
             setUser(sessionStorage.getItem('username'));
+            setScore(sessionStorage.getItem('score'));
         });
     }, []);
 
@@ -27,7 +28,7 @@ export default function Quiz() {
     }, [quizList, randomize]);
 
     function chooseQuiz(quizList) {
-        if(quizList === undefined){
+        if (quizList === undefined) {
             return;
         }
         const index = Math.floor(Math.random() * quizList.length - 1);
@@ -73,7 +74,7 @@ const Container = styled.section`
     width: 90vw;
     height: 80vh;
     position: relative;
-    top: 70px;
+    top: 40px;
     left: 0;
     display: flex;
     flex-direction: column;
