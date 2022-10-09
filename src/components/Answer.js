@@ -1,9 +1,38 @@
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 
 export default function Answer({ answer }) {
 
+    const [randomAnswerList, setRandomAnswerList] = useState([]);
+    const [randomize, setRandomize] = useState(false);
+    const [answerList, setAnswerList] = useState([]);
+
+    useEffect(() => {
+        setAnswerList(answer);
+    }, [answer]);
+
+    useEffect(() => {
+        const answer = chooseQuiz(answerList);
+        console.log(answer)
+        setRandomAnswerList(answer);
+    }, [answerList, randomize])
+
+    function chooseQuiz(quizList) {
+        if (quizList === undefined) {
+            return;
+        }
+        const random = [];
+        for (let i = 0; i < 4; i++) {
+            const index = Math.floor(Math.random() * quizList.length - 1);
+            const element = quizList[index];
+            random.push(element);
+            console.log(quizList[index])
+        }
+        return random;
+    }
+
     function verifyAnswer(answer) {
-        if(answer.correct) {
+        if (answer.correct) {
             console.log('Tela sucesso')
         }
     }
@@ -33,6 +62,7 @@ const Card = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 
     :hover {
         background-color: gray;

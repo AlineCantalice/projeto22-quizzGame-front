@@ -38,8 +38,8 @@ export default function Quiz() {
     return (
         <>
             <Header>
-                {user}
-                {score}
+                <p>{user}</p>
+                <p>{score}</p>
             </Header>
             <Container>
                 <Question quiz={quiz} />
@@ -64,7 +64,7 @@ const Header = styled.header`
     justify-content: space-between;
 
     p {
-        font-size: 38.982px;
+        font-size: 25px;
         color: #373737;
     }
 `
