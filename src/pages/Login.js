@@ -1,24 +1,28 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ThreeDots } from "react-loader-spinner";
+import UserContext from "../contexts/userContext";
 
 export default function Login() {
     const URL = "http://localhost:5000/user";
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({ username: '' });
+    const { setUser } = useContext(UserContext);
 
     function handleInputChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    function signUp(event){
+    function signUp(event) {
         event.preventDefault();
         setLoading(true);
         const promise = axios.post(URL, formData);
         promise.then(() => {
+            setUser(formData.username);
+            sessionStorage.setItem('username', formData.username);
             navigate("/quiz");
         }).catch((error) => {
             alert(error);
@@ -34,7 +38,7 @@ export default function Login() {
             </Header>
             <Form onSubmit={signUp}>
                 <input disabled={loading} type="text" name="username" value={formData.username} onChange={handleInputChange} placeholder="Username" required />
-                <Button disabled={loading} type="submit">{loading ? <ThreeDots color="#FFFFFF"/> : 'Play'}</Button>
+                <Button disabled={loading} type="submit">{loading ? <ThreeDots color="#FFFFFF" /> : 'Play'}</Button>
             </Form>
         </Container>
     )
