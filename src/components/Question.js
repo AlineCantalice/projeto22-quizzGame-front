@@ -1,7 +1,8 @@
+import { ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 import Answer from "./Answer";
 
-export default function Question({quiz}) {
+export default function Question({ quiz }) {
 
     return (
         quiz ?
@@ -9,7 +10,7 @@ export default function Question({quiz}) {
                 <Title>{quiz.question}</Title>
                 <Answer answer={quiz.answer} />
             </> :
-            <>Merda</>
+            <ThreeDots color="#FFFFFF" />
     )
 }
 

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
@@ -11,6 +12,7 @@ export default function Answer({ answer }) {
     const [correct, setCorrect] = useState(false);
     const { score, setScore } = useContext(ScoreContext);
     const navidate = useNavigate();
+    const URL = "http://localhost:5000/user";
 
     useEffect(() => {
         setAnswerList(answer);
@@ -18,22 +20,18 @@ export default function Answer({ answer }) {
 
     useEffect(() => {
         const answer = chooseQuiz(answerList);
-        console.log(answer)
         setRandomAnswerList(answer);
     }, [answerList, randomize])
 
     function chooseQuiz(quizList) {
-        if (quizList === undefined) {
-            return;
+        let i = quizList.length - 1;
+        for (; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = quizList[i];
+            quizList[i] = quizList[j];
+            quizList[j] = temp;
         }
-        const random = [];
-        for (let i = 0; i < 4; i++) {
-            const index = Math.floor(Math.random() * quizList.length - 1);
-            const element = quizList[index];
-            random.push(element);
-            console.log(quizList[index])
-        }
-        return random;
+        return quizList;
     }
 
     function verifyAnswer(answer) {
@@ -44,16 +42,21 @@ export default function Answer({ answer }) {
             sessionStorage.setItem('score', valor);
             alert('Você acertou!')
             window.location.reload()
-        } else {
-            alert('Você errou! :(');
-            sessionStorage.clear();
-            navidate('/');
+        } else {            
+            const username = sessionStorage.getItem('username');
+            const score = sessionStorage.getItem('score');
+            const promise = axios.put(URL, { username: username, score: score });
+            promise.then(() => {
+                sessionStorage.clear();
+                navidate('/');
+                alert('Você errou! :(');
+            });
         }
     }
 
     return (
         <Container>
-            {answer.map(a => <Card onClick={() => verifyAnswer(a)}>{a.answer}</Card>)}
+            {answer.map((answer, index) => <Card key={index} onClick={() => verifyAnswer(answer)}>{answer.answer}</Card>)}
         </Container>
     )
 }
@@ -67,8 +70,9 @@ const Container = styled.section`
     align-items: center;
 `
 const Card = styled.div`
-    background-color: white;
-    color: black;
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    color: #373737;
     width: 40%;
     height: 40%;
     border-radius: 8px;
