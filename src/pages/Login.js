@@ -6,7 +6,7 @@ import { ThreeDots } from "react-loader-spinner";
 import UserContext from "../contexts/userContext";
 
 export default function Login() {
-    const URL = "http://localhost:5000/user";
+    const URL = "https://project22-quizgame.herokuapp.com/user";
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({ username: '' });

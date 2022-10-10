@@ -12,7 +12,7 @@ export default function Answer({ answer }) {
     const [correct, setCorrect] = useState(false);
     const { score, setScore } = useContext(ScoreContext);
     const navidate = useNavigate();
-    const URL = "http://localhost:5000/user";
+    const URL = "https://project22-quizgame.herokuapp.com/user";
 
     useEffect(() => {
         setAnswerList(answer);

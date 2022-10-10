@@ -8,7 +8,7 @@ import UserContext from "../contexts/userContext";
 export default function Quiz() {
     const { user, setUser } = useContext(UserContext);
     const { score, setScore } = useContext(scoreContext);
-    const URL = "http://localhost:5000/quiz";
+    const URL = "https://project22-quizgame.herokuapp.com/quiz";
     const [quizList, setQuizList] = useState([]);
     const [quiz, setQuiz] = useState(null);
     const [randomize, setRandomize] = useState(false);
